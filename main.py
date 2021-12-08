@@ -3,7 +3,8 @@ from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.middleware.cors import CORSMiddleware
 from db import connection
 from models import Drawing, Order, Part, Point, Hole
-from tekla import Tekla, Faza_update
+from tekla import Tekla
+from faza import Faza_update
 
 
 app = FastAPI()
@@ -24,18 +25,6 @@ app.add_middleware(
   allow_headers=["*"],
 )
 
-# @app.on_event("startup")
-# async def startup() -> None:
-#   database_ = app.state.database
-#   if not database_.is_connected:
-#     await database_.connect()
-
-# @app.on_event("shutdown")
-# async def shutdown() -> None:
-#   database_ = app.state.database
-#   if database_.is_connected:
-#     await database_.disconnect()
-
 
 @app.get('/')
 def get():
@@ -55,5 +44,5 @@ async def postTekla(
   order: str = Form(...)
 ):
   Tekla(file,order)
-  # await Faza_update(order)
+  Faza_update(order)
   return # await Point.objects.filter(assembly__cas__cas=order,faza=4).sum('assembly__weight')
