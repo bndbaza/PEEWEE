@@ -11,7 +11,7 @@ class Order(ModelBase):
     table_name='orders'
   id = PrimaryKeyField(null=False)
   create_date = DateTimeField(default=datetime.datetime.now)
-  cas: str = CharField(max_length=50)
+  cas = CharField(max_length=50)
   
 class Drawing(ModelBase):
   class Meta:
