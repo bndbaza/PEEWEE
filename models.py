@@ -18,7 +18,7 @@ class Drawing(ModelBase):
     table_name='drawings'
   id = PrimaryKeyField(null=False)
   create_date = DateTimeField()
-  cas = ForeignKeyField(Order)
+  cas = ForeignKeyField(Order,backref='drawings')
   assembly = CharField(max_length=50)
   area = DecimalField(max_digits=12,decimal_places=3)
   count = IntegerField()

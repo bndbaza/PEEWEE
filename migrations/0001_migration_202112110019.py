@@ -20,7 +20,7 @@ class Order(peewee.Model):
 class Drawing(peewee.Model):
     id = PrimaryKeyField(primary_key=True)
     create_date = DateTimeField()
-    cas = snapshot.ForeignKeyField(index=True, model='order')
+    cas = snapshot.ForeignKeyField(backref='drawings', index=True, model='order')
     assembly = CharField(max_length=50)
     area = DecimalField(auto_round=False, decimal_places=3, max_digits=12, rounding='ROUND_HALF_EVEN')
     count = IntegerField()

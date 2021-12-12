@@ -5,8 +5,8 @@ from db import connection
 from models import Drawing, Order, Part, Point, Hole
 from tekla import Tekla
 from faza import Faza_update
-from peewee import fn
-from schemas import OrderBase, DrawingBase
+from peewee import fn, JOIN
+from schemas import OrderBase, DrawingBase, PointBase,PartBase
 
 
 app = FastAPI()
@@ -28,14 +28,11 @@ app.add_middleware(
 )
 
 
-@app.get('/',response_model=DrawingBase)
+@app.get('/',response_model=OrderBase)
 def get():
-  # drawing = Order(cas="3000")
-  # drawing.save()
-  # print((Drawing.select(((Drawing.area) + (Drawing.weight)).alias('aaa')).first()).aaa)
-  aaa = (Drawing.select().join(Order).where(Order.cas == "2000").dicts()[0])
-  print(aaa)
-  return aaa
+  for i in Order.select(Order.cas, fn.SUM(Drawing.count).alias('aaa')).join(Drawing, JOIN.LEFT_OUTER).group_by(Order.cas):
+    print(i.cas,i.aaa)
+  return (Order.select(Order, Drawing).join(Drawing).first())
 
 # @app.post('/',response_model=Drawing)
 # async def postDrawing(drawing: Drawing):
